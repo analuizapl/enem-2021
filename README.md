@@ -58,5 +58,5 @@ Base | Description
 
 7. Overfitting Concerns: An R² value of 1.0 in every fold of cross-validation is an impossible scenario in real-world data. It indicates a perfect fit, which is highly unlikely and suggests overfitting.
 
-## Próximos passos
-Melhorar o código já existente e explorar mais análises com os dados do enem
+## Next Steps
+Fix overfitting problem
