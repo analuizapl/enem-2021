@@ -1,41 +1,62 @@
-# README
+# Enem 2021 - Linear Regression on Student Performance
 
-## Descrição
+## Description
 
-Este projeto tem como objetivo analisar os microdados do ENEM 2021 e construir um modelo de regressão linear para prever a nota final dos alunos com base nas variáveis socioeconômicas e nas notas das provas objetivas.
+This code analyzes the Brazilian National High School Examination (Enem) microdata from 2021 to predict student performance on the final exam based on socioeconomic factors.
 
-## Dados Utilizados
-Para esta análise, foram utilizados os seguintes conjuntos de dados:
-Base | Descrição 
+## Data
+For this analysis, the following data sets were used:
+Base | Description
 --- | --- 
-[ENEM Data 2021](https://download.inep.gov.br/microdados/microdados_enem_2021.zip) | Dados sobre o Exame Nacional aplicado em 2021 com todas as notas do candidato.
+[ENEM Data 2021](https://download.inep.gov.br/microdados/microdados_enem_2021.zip) | Data on the National Exam applied in 2021 with all the candidate's grades.
 
 
-## Descrição do Código
+## Data Cleaning and Preparation:
+1. Reads the Enem microdata CSV file.
+2. Renames columns for better readability.
+3. Converts categorical columns with letter grades ('A', 'B', 'C', etc.) to numerical values (0, 1, 2, etc.).
+4. Handles missing data by dropping rows with missing values (dropna()).
+5. Creates dummy variables for categorical columns like gender and parental occupation.
+6. Converts some string columns (e.g., 'NU_NOTA_CN') to numeric format for calculations.
+7. Creates a new 'NOTA_FINAL' column representing the average of all subject scores.
+8. Splits the data into features (X) and target variable (y).
+	X: all columns except 'NOTA_FINAL'.
+	y: 'NOTA_FINAL' column.
+9. Splits the data further into training and testing sets (80%/20% split) using train_test_split for model evaluation.
 
-+ Definição das Colunas: As colunas relevantes dos dados do ENEM 2021 são definidas.
 
-+ Renomeação das Colunas: As colunas do DataFrame são renomeadas para nomes mais descritivos.
+## Model Building and Evaluation:
 
-+ Substituição de Valores Categóricos: Os valores categóricos das colunas de quantidade são substituídos por valores numéricos.
+1. Trains a linear regression model (modelo_lr) to predict the 'NOTA_FINAL' based on the features in X_train.
+2. Generates predictions (y_pred) using the trained model on the training data (X_train).
+3. Calculates the feature importances (coefficients) to identify which features have the most significant impact on the model's predictions.
+4. Analyzes the top 5 and bottom 5 most important features using bar plots with Seaborn.
+5. Creates a scatter plot to visualize the actual vs. predicted values for the training data.
+6. Calculates the percentage of points that fall above, below, and exactly on the regression line.
 
-+ Tratamento de Dados Faltantes: As linhas com dados faltantes são removidas.
+## Preliminary Conclusions from the ENEM Test-Taker Visualization
 
-+ Codificação de Variáveis Categóricas: As variáveis categóricas são convertidas em variáveis dummy (variáveis indicadoras).
+1. Majority of Test-Takers are Young: The overwhelming majority of students taking the ENEM are in their late teens or early twenties, as expected for a high school exam.
 
-+ Cálculo da Nota Final: A nota final dos alunos é calculada como a média das notas das provas objetivas e da redação.
+2. Fewer Older Test-Takers: The number of test-takers decreases significantly as age increases. This could be due to various reasons such as returning to education later in life or taking the exam for other purposes like college entrance.
 
-+ Divisão dos Dados: Os dados são divididos em conjuntos de treinamento e teste.
+3. Gender Imbalance: There is a notable disparity between the genders, with females outnumbering males by a substantial margin.
 
-+ Treinamento do Modelo: Um modelo de regressão linear é treinado usando o conjunto de dados de treinamento.
+	* Quantitative Difference: Approximately 334,092 females are represented compared to 257,297 males.
+4. Score Differences Across Subjects: There is a noticeable difference in median scores across subjects.
 
-+ Predição dos Valores: As notas finais são previstas usando o modelo treinado.
+	* NU_NOTA_REDACAO (Redação): Has the highest median.
+	* NU_NOTA_CH (Humanidades): Follows with a slightly lower median.
+	* Other Subjects: NU_NOTA_CN, NU_NOTA_LC, and NU_NOTA_MT have relatively lower medians.
+5. Impact of Socioeconomic Factors:
 
-+ Importância das Features: As importâncias das features são calculadas e visualizadas para as top 5 e bottom 5 features.
+	* Positive Impact: Features like ESCOLARIDADE_PAI_A (father's education level) and RENDA_MENSAL_D (household income) have the most significant positive impact on the model's predictions, suggesting these factors are crucial in influencing outcomes.
 
-+ Visualização dos Resultados: Gráficos de dispersão são gerados para comparar os valores reais e previstos.
+	* Negative Importance: Features such as ESCOLARIDADE_MAE_A (mother's education level) and QUANT_BANHEIROS (number of bathrooms) have negative importance, implying a negative correlation with the target variable. However, their impact is relatively small compared to the top features.
 
-+ Cálculo de Erros: As diferenças entre os valores reais e previstos são calculadas e analisadas.
+6. Model Bias: The higher percentage of points below the line suggests a potential underestimation bias in the model, indicating that the model consistently predicts values lower than the actual values.
+
+7. Overfitting Concerns: An R² value of 1.0 in every fold of cross-validation is an impossible scenario in real-world data. It indicates a perfect fit, which is highly unlikely and suggests overfitting.
 
 ## Próximos passos
 Melhorar o código já existente e explorar mais análises com os dados do enem
